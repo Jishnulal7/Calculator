@@ -8,26 +8,88 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
+var userQuestion = '12';
+
+var userAnswer = '34';
+
+final List<String> buttons = [
+  'C',
+  'DEL',
+  '%',
+  '/',
+  '9',
+  '8',
+  '7',
+  'x',
+  '6',
+  '5',
+  '4',
+  '-',
+  '3',
+  '2',
+  '1',
+  '+',
+  '0',
+  '.',
+  'ANS',
+  '='
+];
+
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.deepPurple[150],
+      backgroundColor: Colors.deepPurple[100],
       body: Column(children: <Widget>[
-        Expanded(child: Container()),
+        Expanded(
+            child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Container(
+                      alignment: Alignment.centerLeft, child: Text(userQuestion,style: TextStyle(fontSize: 20),)),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Container(
+                      alignment: Alignment.centerRight, child: Text(userAnswer,style: TextStyle(fontSize: 20))),
+                ),
+              ],
+            ),
+          ),
+        )),
         Expanded(
             flex: 2,
             child: Container(
-              color: Colors.deepPurple,
-              child: const Center(
-                child: MyButtons(
-                  buttonText: '0',
-                  color: Colors.deepPurple,
-                  textColor: Colors.white,
-                ),
-              ),
+              child: Center(
+                  child: GridView.builder(
+                      itemCount: buttons.length,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 4),
+                      itemBuilder: ((context, index) {
+                        return MyButton(
+                            color: isOperator(buttons[index])
+                                ? Colors.deepPurple
+                                : Colors.deepPurple[50],
+                            textColor: isOperator(buttons[index])
+                                ? Colors.white
+                                : Colors.deepPurple,
+                            buttonText: buttons[index]);
+                      }))),
             ))
       ]),
     );
   }
+}
+
+bool isOperator(String x) {
+  if (x == '%' || x == '/' || x == '+' || x == '-' || x == '=' || x == 'x') {
+    return true;
+  }
+  return false;
 }
