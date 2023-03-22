@@ -1,5 +1,8 @@
+
+
 import 'package:calculator/buttons.dart';
 import 'package:flutter/material.dart';
+import 'package:math_expressions/math_expressions.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -8,9 +11,9 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-var userQuestion = '12';
+var userQuestion = '';
 
-var userAnswer = '34';
+var userAnswer = '';
 
 final List<String> buttons = [
   'C',
@@ -20,7 +23,7 @@ final List<String> buttons = [
   '9',
   '8',
   '7',
-  'x',
+  '*',
   '6',
   '5',
   '4',
@@ -54,14 +57,15 @@ class _HomePageState extends State<HomePage> {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         userQuestion,
-                        style: TextStyle(fontSize: 20),
+                        style: const TextStyle(fontSize: 20),
                       )),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Container(
                       alignment: Alignment.centerRight,
-                      child: Text(userAnswer, style: TextStyle(fontSize: 20))),
+                      child: Text(userAnswer,
+                          style: const TextStyle(fontSize: 20))),
                 ),
               ],
             ),
@@ -77,14 +81,52 @@ class _HomePageState extends State<HomePage> {
                           const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 4),
                       itemBuilder: ((context, index) {
-                        return MyButton(
-                            color: isOperator(buttons[index])
-                                ? Colors.deepPurple
-                                : Colors.deepPurple[50],
-                            textColor: isOperator(buttons[index])
-                                ? Colors.white
-                                : Colors.deepPurple,
-                            buttonText: buttons[index]);
+                        if (index == 0) {
+                          return MyButton(
+                              buttonTap: () {
+                                setState(() {
+                                  userQuestion = '';
+                                });
+                              },
+                              color: const Color.fromARGB(255, 41, 226, 17),
+                              textColor: Colors.white,
+                              buttonText: buttons[index]);
+                        } else if (index == 1) {
+                          return MyButton(
+                              buttonTap: () {
+                                setState(() {
+                                  userQuestion = userQuestion.substring(
+                                      0, userQuestion.length - 1);
+                                });
+                              },
+                              color: const Color.fromARGB(255, 221, 36, 22),
+                              textColor: Colors.white,
+                              buttonText: buttons[index]);
+                        } else if (index == buttons.length - 1) {
+                          return MyButton(
+                              buttonTap: () {
+                                setState(() {
+                                  equalButton();
+                                });
+                              },
+                              color: const Color.fromARGB(255, 221, 36, 22),
+                              textColor: Colors.white,
+                              buttonText: buttons[index]);
+                        } else {
+                          return MyButton(
+                              buttonTap: () {
+                                setState(() {
+                                  userQuestion += buttons[index];
+                                });
+                              },
+                              color: isOperator(buttons[index])
+                                  ? Colors.deepPurple
+                                  : Colors.white,
+                              textColor: isOperator(buttons[index])
+                                  ? Colors.white
+                                  : Colors.deepPurple,
+                              buttonText: buttons[index]);
+                        }
                       }))),
             ))
       ]),
@@ -93,8 +135,19 @@ class _HomePageState extends State<HomePage> {
 }
 
 bool isOperator(String x) {
-  if (x == '%' || x == '/' || x == '+' || x == '-' || x == '=' || x == 'x') {
+  if (x == '%' || x == '/' || x == '+' || x == '-' || x == '=' || x == '*') {
     return true;
   }
   return false;
+}
+
+void equalButton() {
+  String finalQuestion = userQuestion;
+
+  Parser p = Parser();
+  Expression exp = p.parse(finalQuestion);
+  ContextModel cm = ContextModel();
+  double eval = exp.evaluate(EvaluationType.REAL, cm);
+
+  userAnswer = eval.toString();
 }
