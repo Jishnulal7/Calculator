@@ -51,12 +51,17 @@ class _HomePageState extends State<HomePage> {
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Container(
-                      alignment: Alignment.centerLeft, child: Text(userQuestion,style: TextStyle(fontSize: 20),)),
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        userQuestion,
+                        style: TextStyle(fontSize: 20),
+                      )),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Container(
-                      alignment: Alignment.centerRight, child: Text(userAnswer,style: TextStyle(fontSize: 20))),
+                      alignment: Alignment.centerRight,
+                      child: Text(userAnswer, style: TextStyle(fontSize: 20))),
                 ),
               ],
             ),
