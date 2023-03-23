@@ -57,7 +57,7 @@ class _HomePageState extends State<HomePage> {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         userQuestion,
-                        style: const TextStyle(fontSize: 20),
+                        style: const TextStyle(fontSize: 25,fontWeight: FontWeight.bold),
                       )),
                 ),
                 Padding(
@@ -65,7 +65,7 @@ class _HomePageState extends State<HomePage> {
                   child: Container(
                       alignment: Alignment.centerRight,
                       child: Text(userAnswer,
-                          style: const TextStyle(fontSize: 20))),
+                          style: const TextStyle(fontSize: 25,fontWeight: FontWeight.bold))),
                 ),
               ],
             ),
